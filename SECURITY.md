@@ -18,7 +18,7 @@
 If you discover a security vulnerability in `Fang`, please report it responsibly:
 
 1. **Do not open a public GitHub issue.**
-2. Send an email with details and reproduction steps to `security@example.com` (or create a private GitHub Security Advisory).
+2. Submit a private advisory via [GitHub Security Advisories](https://github.com/X-4xu/fang/security/advisories/new) or send an email directly to `hassanaliaa189@gmail.com`.
 3. Provide details regarding:
    - Type of issue (e.g. ReDoS in parser, unhandled exception with untrusted input, path traversal in output file handling).
    - Sample log lines that reproduce the issue.

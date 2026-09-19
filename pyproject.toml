@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [
-    { name = "Security Automation Engineering Team" }
+    { name = "Hassan Ali (X-4xu)", email = "hassanaliaa189@gmail.com" }
 ]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
