@@ -154,6 +154,7 @@ def run_analyzer(
     path = Path(log_file)
     if path.suffix == ".gz":
         import gzip
+
         with gzip.open(path, "rt", errors="replace") as f:
             summary.total_lines_read = sum(1 for _ in f)
     else:
@@ -167,7 +168,9 @@ def run_analyzer(
     # Export JSON if requested
     if output_path:
         ReportExporter.export_json(summary, alerts, output_path=output_path)
-        console.print(f"[green][+] Exported JSON security report to:[/green] [bold]{output_path}[/bold]")
+        console.print(
+            f"[green][+] Exported JSON security report to:[/green] [bold]{output_path}[/bold]"
+        )
 
     return summary, alerts
 
@@ -179,7 +182,9 @@ def main(argv: list[str] | None = None) -> int:
 
     # Configure logging
     log_level = logging.DEBUG if args.verbose else logging.WARNING
-    logging.basicConfig(level=log_level, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
+    logging.basicConfig(
+        level=log_level, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+    )
 
     # Validate file existence before starting
     err_console = Console(stderr=True)

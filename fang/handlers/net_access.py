@@ -63,7 +63,8 @@ class NetAccessControllerHook(ActionHandler):
 
         if self.is_whitelisted(alert.source_ip):
             logger.warning(
-                "Refusing to dispatch block action for whitelisted IP: %s", alert.source_ip
+                "Refusing to dispatch block action for whitelisted IP: %s",
+                alert.source_ip,
             )
             return
 

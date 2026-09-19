@@ -20,8 +20,12 @@ class ConsoleAlertHandler(ActionHandler):
     def handle_alert(self, alert: SecurityAlert) -> None:
         """Render alert panel to console."""
         color = self._severity_color(alert.severity)
-        usernames = ", ".join(alert.target_usernames) if alert.target_usernames else "unknown"
-        ports = ", ".join(str(p) for p in alert.ports) if alert.ports else "standard (22)"
+        usernames = (
+            ", ".join(alert.target_usernames) if alert.target_usernames else "unknown"
+        )
+        ports = (
+            ", ".join(str(p) for p in alert.ports) if alert.ports else "standard (22)"
+        )
 
         text = (
             f"[bold]Alert ID:[/bold] {alert.alert_id}\n"

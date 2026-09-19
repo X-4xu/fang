@@ -53,25 +53,36 @@ def test_run_analyzer_rfc3339_fixture(rfc3339_log_path: Path) -> None:
 
 def test_cli_main_success(classic_log_path: Path, tmp_path: Path) -> None:
     output_json = tmp_path / "cli_out.json"
-    exit_code = main([
-        "--log-file", str(classic_log_path),
-        "--threshold", "5",
-        "--window", "60",
-        "--output", str(output_json),
-        "--quiet",
-    ])
+    exit_code = main(
+        [
+            "--log-file",
+            str(classic_log_path),
+            "--threshold",
+            "5",
+            "--window",
+            "60",
+            "--output",
+            str(output_json),
+            "--quiet",
+        ]
+    )
     assert exit_code == 0
     assert output_json.exists()
 
 
 def test_cli_main_exit_code_on_alert(classic_log_path: Path) -> None:
-    exit_code = main([
-        "--log-file", str(classic_log_path),
-        "--threshold", "5",
-        "--window", "60",
-        "--exit-code-on-alert",
-        "--quiet",
-    ])
+    exit_code = main(
+        [
+            "--log-file",
+            str(classic_log_path),
+            "--threshold",
+            "5",
+            "--window",
+            "60",
+            "--exit-code-on-alert",
+            "--quiet",
+        ]
+    )
     # Expect exit code 2 because an alert was detected
     assert exit_code == 2
 

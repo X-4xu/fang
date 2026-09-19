@@ -12,6 +12,7 @@ from typing import Any
 
 class EventType(str, Enum):
     """Types of SSH authentication log events."""
+
     FAILED_PASSWORD = "FAILED_PASSWORD"
     INVALID_USER = "INVALID_USER"
     AUTH_FAILURE = "AUTH_FAILURE"
@@ -33,6 +34,7 @@ class EventType(str, Enum):
 
 class AlertSeverity(str, Enum):
     """Severity classification for security alerts."""
+
     LOW = "low"
     MEDIUM = "medium"
     HIGH = "high"
@@ -42,6 +44,7 @@ class AlertSeverity(str, Enum):
 @dataclass(frozen=True)
 class SshAuthEvent:
     """Represents a single parsed SSH authentication event from the log."""
+
     timestamp: datetime
     event_type: EventType
     source_ip: str
@@ -68,6 +71,7 @@ class SshAuthEvent:
 @dataclass
 class SecurityAlert:
     """Security alert representing detected suspicious activity (e.g. brute force)."""
+
     alert_id: str
     source_ip: str
     severity: AlertSeverity
@@ -79,9 +83,7 @@ class SecurityAlert:
     target_usernames: list[str] = field(default_factory=list)
     ports: list[int] = field(default_factory=list)
     evidence_events: list[SshAuthEvent] = field(default_factory=list)
-    detected_at: datetime = field(
-        default_factory=lambda: datetime.now(timezone.utc)
-    )
+    detected_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
     def to_dict(self) -> dict[str, Any]:
         """Serialize security alert to structured JSON format."""
@@ -109,6 +111,7 @@ class SecurityAlert:
 @dataclass
 class AnalysisSummary:
     """High-level summary of an execution run."""
+
     log_file_path: str
     total_lines_read: int = 0
     total_events_parsed: int = 0
@@ -135,6 +138,8 @@ class AnalysisSummary:
             "unique_source_ips": self.unique_source_ips,
             "alerts_triggered": self.alerts_triggered,
             "scan_start_time": self.scan_start_time.isoformat(),
-            "scan_end_time": self.scan_end_time.isoformat() if self.scan_end_time else None,
+            "scan_end_time": (
+                self.scan_end_time.isoformat() if self.scan_end_time else None
+            ),
             "scan_duration_seconds": round(duration, 3),
         }

@@ -67,16 +67,24 @@ class ReportExporter:
         console = console or Console()
 
         # 1. Summary Metrics Table
-        summary_table = Table(title="Fang: SSH Security Analysis Summary", show_header=True, header_style="bold cyan")
+        summary_table = Table(
+            title="Fang: SSH Security Analysis Summary",
+            show_header=True,
+            header_style="bold cyan",
+        )
         summary_table.add_column("Metric", style="bold")
         summary_table.add_column("Value", style="green")
 
         summary_table.add_row("Log File Path", summary.log_file_path)
         summary_table.add_row("Total Lines Scanned", str(summary.total_lines_read))
         summary_table.add_row("SSH Events Parsed", str(summary.total_events_parsed))
-        summary_table.add_row("Failed Login Attempts", str(summary.failed_attempts_count))
+        summary_table.add_row(
+            "Failed Login Attempts", str(summary.failed_attempts_count)
+        )
         summary_table.add_row("Unique Source IPs", str(summary.unique_source_ips))
-        summary_table.add_row("Brute-Force Alerts Triggered", str(summary.alerts_triggered))
+        summary_table.add_row(
+            "Brute-Force Alerts Triggered", str(summary.alerts_triggered)
+        )
 
         duration = (
             (summary.scan_end_time - summary.scan_start_time).total_seconds()
@@ -90,7 +98,11 @@ class ReportExporter:
 
         # 2. Detected Alerts Table (if any)
         if alerts:
-            alerts_table = Table(title="Detected Brute-Force Incidents", show_header=True, header_style="bold red")
+            alerts_table = Table(
+                title="Detected Brute-Force Incidents",
+                show_header=True,
+                header_style="bold red",
+            )
             alerts_table.add_column("Alert ID", style="dim")
             alerts_table.add_column("Source IP", style="bold")
             alerts_table.add_column("Severity", justify="center")
@@ -127,4 +139,6 @@ class ReportExporter:
             console.print(alerts_table)
             console.print()
         else:
-            console.print("\n[bold green][OK] No brute-force attacks detected matching the criteria.[/bold green]\n")
+            console.print(
+                "\n[bold green][OK] No brute-force attacks detected matching the criteria.[/bold green]\n"
+            )

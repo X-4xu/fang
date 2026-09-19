@@ -29,9 +29,7 @@ RE_RFC3339_PREFIX = re.compile(
 
 # Regex for traditional Syslog timestamp
 # e.g.: Sep 19 14:32:10 or Oct  5 09:05:01
-RE_SYSLOG_PREFIX = re.compile(
-    r"^([A-Z][a-z]{2}\s+\d{1,2}\s+\d{2}:\d{2}:\d{2})\s+"
-)
+RE_SYSLOG_PREFIX = re.compile(r"^([A-Z][a-z]{2}\s+\d{1,2}\s+\d{2}:\d{2}:\d{2})\s+")
 
 # Regex patterns for SSH authentication events
 # Pattern 1: Failed password for [invalid user] <username> from <ip> port <port>
@@ -66,7 +64,9 @@ class SshLogParser:
     Ensures safe, bounded execution and sanitization of all untrusted fields.
     """
 
-    def __init__(self, reference_year: int | None = None, tz: timezone = timezone.utc) -> None:
+    def __init__(
+        self, reference_year: int | None = None, tz: timezone = timezone.utc
+    ) -> None:
         self.reference_year = reference_year or datetime.now(timezone.utc).year
         self.tz = tz
 
@@ -81,13 +81,17 @@ class SshLogParser:
 
         try:
             if path.suffix == ".gz":
-                with gzip.open(path, mode="rt", encoding="utf-8", errors="replace") as f:
+                with gzip.open(
+                    path, mode="rt", encoding="utf-8", errors="replace"
+                ) as f:
                     yield from self.parse_stream(f)
             else:
                 with open(path, mode="r", encoding="utf-8", errors="replace") as f:
                     yield from self.parse_stream(f)
         except PermissionError as e:
-            raise PermissionError(f"Permission denied accessing log file {path}: {e}") from e
+            raise PermissionError(
+                f"Permission denied accessing log file {path}: {e}"
+            ) from e
         except Exception as e:
             logger.error("Error reading log file %s: %s", path, e)
             raise
@@ -129,7 +133,7 @@ class SshLogParser:
                 dt = datetime.fromisoformat(ts_str)
                 if dt.tzinfo is None:
                     dt = dt.replace(tzinfo=self.tz)
-                return dt, line[m_rfc.end():]
+                return dt, line[m_rfc.end() :]
             except ValueError:
                 pass
 
@@ -139,13 +143,15 @@ class SshLogParser:
             ts_str = m_syslog.group(1)
             try:
                 # Parse month, day, time with reference year
-                dt_naive = datetime.strptime(f"{self.reference_year} {ts_str}", "%Y %b %d %H:%M:%S")
+                dt_naive = datetime.strptime(
+                    f"{self.reference_year} {ts_str}", "%Y %b %d %H:%M:%S"
+                )
                 # Handle year rollover if log is from Dec and current year is Jan
                 now = datetime.now(timezone.utc)
                 if dt_naive.month == 12 and now.month == 1:
                     dt_naive = dt_naive.replace(year=self.reference_year - 1)
                 dt = dt_naive.replace(tzinfo=self.tz)
-                return dt, line[m_syslog.end():]
+                return dt, line[m_syslog.end() :]
             except ValueError:
                 pass
 
@@ -219,7 +225,11 @@ class SshLogParser:
             if not ip:
                 return None
             raw_user = m.group("user")
-            user = self._sanitize_username(raw_user) if raw_user and not self._is_ip(raw_user) else None
+            user = (
+                self._sanitize_username(raw_user)
+                if raw_user and not self._is_ip(raw_user)
+                else None
+            )
             port = self._safe_int(m.group("port"))
             return SshAuthEvent(
                 timestamp=timestamp,

@@ -112,7 +112,9 @@ def test_detector_cooldown_deduplication() -> None:
 
     # New burst after cooldown (150 seconds later)
     for i in range(5):
-        alert = detector.process_event(make_event("10.0.0.1", seconds_offset=150 + i * 2))
+        alert = detector.process_event(
+            make_event("10.0.0.1", seconds_offset=150 + i * 2)
+        )
         if alert:
             alerts.append(alert)
 
@@ -125,7 +127,9 @@ def test_detector_privileged_user_severity() -> None:
 
     for i in range(5):
         user = "root" if i == 4 else "testuser"
-        alert = detector.process_event(make_event("10.0.0.1", seconds_offset=i * 2, user=user))
+        alert = detector.process_event(
+            make_event("10.0.0.1", seconds_offset=i * 2, user=user)
+        )
         if alert:
             alerts.append(alert)
 

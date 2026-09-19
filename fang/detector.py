@@ -94,7 +94,9 @@ class BruteForceDetector:
             if alert is not None:
                 yield alert
 
-    def _create_alert(self, source_ip: str, events: list[SshAuthEvent]) -> SecurityAlert:
+    def _create_alert(
+        self, source_ip: str, events: list[SshAuthEvent]
+    ) -> SecurityAlert:
         """Construct SecurityAlert from the current window events."""
         events_sorted = sorted(events, key=lambda x: x.timestamp)
         start_time = events_sorted[0].timestamp
